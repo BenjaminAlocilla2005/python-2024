@@ -1,57 +1,62 @@
-td = 12000 #tarifa diurna
-tn = 16000  #tarifa nocturna
-tdd = 14000  #tarifa diurna en domingo
-tnd = 19000  #tarifa nocturna en domingo
+td = 12000  
+tn = 16000  
+
+ds = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"]
+tdd = td + 2000
+tnd = tn + 3000
+
 e = {
     "Primer empleado": {
-        "Lunes": "nocturno",
-        "Martes": "nocturno",
-        "Miercoles": "nocturno",
-        "Jueves": "diurno",
-        "Viernes": "diurno",
+        "Lunes": "Nocturno",
+        "Martes": "Nocturno",
+        "Miercoles": "Nocturno",
+        "Jueves": "Diurno",
+        "Viernes": "Diurno",
         "Sabado": "descanso",
         "Domingo": "descanso"
     },
     "Segundo empleado": {
-        "Lunes": "descanso",
-        "Martes": "nocturno",
-        "Miercoles": "nocturno",
-        "Jueves": "nocturno",
+        "Lunes": "",
+        "Martes": "Nocturno",
+        "Miercoles": "Nocturno",
+        "Jueves": "Nocturno",
         "Viernes": "descanso",
         "Sabado": "descanso",
-        "Domingo": "diurno"
+        "Domingo": "Diurno"
     },
     "Tercer empleado": {
         "Lunes": "descanso",
         "Martes": "descanso",
-        "Miercoles": "diurno",
-        "Jueves": "diurno",
-        "Viernes": "diurno",
-        "Sabado": "nocturno",
-        "Domingo": "nocturno"
+        "Miercoles": "Diurno",
+        "Jueves": "Diurno",
+        "Viernes": "Diurno",
+        "Sabado": "Nocturno",
+        "Domingo": "Nocturno"
     }
 }
-def sp(e):   #suma de pagos 
+for empleado, horario in e.items():
     ps = 0
-    for d, t in e.items():
-        if t == "diurno":
-            if d == "Domingo":
-                pd = tdd
+    for dia, turno in horario.items():
+        if turno == "Diurno":
+            if dia == "Domingo":
+                pd = tdd * 10
             else:
-                pd = td
-        elif t == "nocturno":
-            if d == "Domingo":
-                pd = tnd
+                pd = td * 10
+        elif turno == "Nocturno":
+            if dia == "Domingo":
+                pd = tnd * 10
             else:
-                pd = tn
+                pd = tn * 10
         else:
-            pd = 0  
+            pd = 0
+        
+        if turno != "":
+            print(f"{empleado} trabaja {dia} en turno {turno}: Pago diario = {pd} CLP")
+            ps += pd
+    
+    e[empleado]["Pago_Semanal"] = ps
+    print(f"Total semanal de {empleado}: {ps} CLP\n")
 
-        ps += pd
-
-    return ps
-for nombre, horario in e.items():
-    c = sp(horario)
-    print(f"Empleado: {nombre}") 
-    print(f"Pago semanal: {c} CLP")
-    print("---")
+for empleado, info in e.items():
+    print(f"Empleado: {empleado}")
+    print(f"  Pago semanal total: {info["Pago_Semanal"]} CLP\n")
